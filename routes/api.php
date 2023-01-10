@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\AboutController;
 use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\SkillController;
+use App\Http\Controllers\API\EducationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,4 +45,11 @@ Route::controller(SkillController::class)->group(function(){
     Route::post('admin/skill/create', 'create');
     Route::post('admin/skill/update/{id}', 'update');
     Route::get('admin/skill/destroy/{id}', 'destroy');
+});
+
+Route::controller(EducationController::class)->group(function(){
+    Route::get('admin/educations', 'index');
+    Route::post('admin/education/create', 'create');
+    Route::post('admin/education/update/{id}', 'update');
+    Route::get('admin/education/destroy/{id}', 'destroy');
 });

@@ -22,11 +22,11 @@ class SkillController extends Controller
             'name' => 'required'
         ]);
 
-        $service = new Skill();
-        $service->service_id = $request->service_id;
-        $service->name = $request->name;
-        $service->proficiency = $request->proficiency;
-        $service->save();
+        $skill = new Skill();
+        $skill->service_id = $request->service_id;
+        $skill->name = $request->name;
+        $skill->proficiency = $request->proficiency;
+        $skill->save();
     }
 
     public function update(Request $request, $id)
@@ -35,9 +35,9 @@ class SkillController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
+        $skill->service_id = $request->service_id;
         $skill->name = $request->name;
-        $skill->icon = $request->icon;
-        $skill->description = $request->description;
+        $skill->proficiency = $request->proficiency;
         $skill->save();
     }
 
