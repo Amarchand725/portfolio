@@ -4,15 +4,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Service;
+use App\Models\Skill;
 
-class ServiceController extends Controller
+class SkillController extends Controller
 {
     public function index()
     {
-        $services = Service::orderBy('id', 'desc')->get();
+        $skills = Skill::with('service')->orderBy('id', 'desc')->get();
         return response()->json([
-            'services' => $services
+            'skills' => $skills
         ], 200);
     }
 
@@ -22,28 +22,28 @@ class ServiceController extends Controller
             'name' => 'required'
         ]);
 
-        $service = new Service();
+        $service = new Skill();
+        $service->service_id = $request->service_id;
         $service->name = $request->name;
-        $service->icon = $request->icon;
-        $service->description = $request->description;
+        $service->proficiency = $request->proficiency;
         $service->save();
     }
 
     public function update(Request $request, $id)
     {
-        $service = Service::find($id);
+        $skill = Skill::find($id);
         $this->validate($request, [
             'name' => 'required'
         ]);
-        $service->name = $request->name;
-        $service->icon = $request->icon;
-        $service->description = $request->description;
-        $service->save();
+        $skill->name = $request->name;
+        $skill->icon = $request->icon;
+        $skill->description = $request->description;
+        $skill->save();
     }
 
     public function destroy($id)
     {
-        $service = Service::findOrFail($id);
-        $service->delete();
+        $skill = Skill::findOrFail($id);
+        $skill->delete();
     }
 }
