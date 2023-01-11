@@ -6,6 +6,10 @@ import adminAboutIndex from '../components/admin/about/index.vue'
 import adminServiceIndex from '../components/admin/services/index.vue'
 import adminSkillIndex from '../components/admin/skills/index.vue'
 import adminEducationIndex from '../components/admin/educations/index.vue'
+import adminExperienceIndex from '../components/admin/experience/index.vue'
+import adminProjectIndex from '../components/admin/projects/index.vue'
+import adminProjectNew from '../components/admin/projects/create.vue'
+import adminProjectEdit from '../components/admin/projects/edit.vue'
 //pages
 import homePageIndex from '../components/pages/home/index.vue'
 import Login from '../components/auth/login.vue'
@@ -50,6 +54,38 @@ const routes = [
         path:'/admin/educations',
         name: 'AdminEducation',
         component: adminEducationIndex,
+        meta:{
+            requiresAuth: true
+        }
+    },
+    {
+        path:'/admin/experiences',
+        name: 'AdminExperience',
+        component: adminExperienceIndex,
+        meta:{
+            requiresAuth: true
+        }
+    },
+    {
+        path:'/admin/projects',
+        name: 'AdminProject',
+        component: adminProjectIndex,
+        meta:{
+            requiresAuth: true
+        }
+    },
+    {
+        path:'/admin/projects/new',
+        name: 'AdminProjectNew',
+        component: adminProjectNew,
+        meta:{
+            requiresAuth: true
+        }
+    },
+    {
+        path:'/admin/projects/edit',
+        name: 'AdminProjectEdit',
+        component: adminProjectEdit,
         meta:{
             requiresAuth: true
         }

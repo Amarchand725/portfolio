@@ -2,13 +2,12 @@
     import Base from '../layouts/base.vue'
     import { onMounted, ref } from 'vue'
 
-    let educations =ref([])
+    let experiences =ref([])
 
     const form = ref({
-        institution: '',
+        company: '',
         period: '',
-        degree: '',
-        department: '',
+        position: '',
     })
 
     const showModal = ref(false)
@@ -16,12 +15,12 @@
     const editMode = ref(false)
 
     onMounted(async() => {
-        getEducations()
+        getExperiences()
     })
 
-    const getEducations = async () => {
-        let  response = await axios.get('/api/admin/educations')
-        educations.value = response.data.educations
+    const getExperiences = async () => {
+        let  response = await axios.get('/api/admin/experiences')
+        experiences.value = response.data.experiences
     }
 
     const openModal = () => {
@@ -34,14 +33,14 @@
         editModal.value = false;
     }
 
-    const createEducation = async() => {
-        await axios.post('/api/admin/education/create', form.value)
+    const createExperience = async() => {
+        await axios.post('/api/admin/experience/create', form.value)
         .then(response => {
-            getEducations()
+            getExperiences()
             closeModal()
             toast.fire({
                 icon: 'success',
-                title: 'Education added successfully.',
+                title: 'Experience added successfully.',
             })
         })
     }
@@ -51,18 +50,19 @@
         form.value = education
     }
 
-    const updateEducation = async () => {
-        await axios.post('/api/admin/education/update/'+form.value.id, form.value)
+    const updateExperience = async () => {
+        await axios.post('/api/admin/experience/update/'+form.value.id, form.value)
         .then(() => {
-            getEducations()
+            getExperiences()
             closeModal()
             toast.fire({
                 icon: 'success',
-                title: 'Education updated successfully.'
+                title: 'Experience updated successfully.'
             })
         })
     }
-    const deleteEducation = (id) => {
+
+    const deleteExperience = (id) => {
         Swal.fire({
             title: 'Are you sure?',
             text: "You can't back",
@@ -75,18 +75,19 @@
         })
         .then((result) => {
             if(result.value){
-                axios.get('/api/admin/education/destroy/'+id)
+                axios.get('/api/admin/experience/destroy/'+id)
                 .then(() => {
                     Swal.fire(
                         'Delete',
-                        'Education delete successfully',
+                        'Experience delete successfully',
                         'success',
                     )
-                    getEducations()
+                    getExperiences()
                 })
             }
         })
     }
+
 </script>
 <template>
     <Base />
@@ -96,16 +97,16 @@
         <!-- End Side Nav -->
         <!-- Main Content -->
         <div class="main__content">
-            <!--==================== EDUCATIONS ====================-->
-            <section class="educations section" id="educations">
+             <!--==================== EXPERIENCES ====================-->
+            <section class="experiences section" id="experiences">
                 <div class="skills_container">
                     <div class="titlebar">
                         <div class="titlebar_item">
-                            <h1>Educations </h1>
+                            <h1>Experiences </h1>
                         </div>
                         <div class="titlebar_item">
                             <div class="btn btn__open--modal" @click="openModal()">
-                                New Education
+                                New Experience
                             </div>
                         </div>
                     </div>
@@ -135,28 +136,26 @@
                             </div>
                             <div class="relative">
                                 <i class="table_search-input--icon fas fa-search "></i>
-                                <input class="table_search--input" type="text" placeholder="Search Education">
+                                <input class="table_search--input" type="text" placeholder="Search Experience">
                             </div>
                         </div>
 
-                        <div class="education_table-heading">
-                            <p>Institution</p>
+                        <div class="experience_table-heading">
+                            <p>Company</p>
                             <p>Period</p>
-                            <p>Degree</p>
-                            <p>Department</p>
+                            <p>Position</p>
                             <p>Actions</p>
                         </div>
                         <!-- item 1 -->
-                        <div class="education_table-items" v-for="education in educations" :key="education.id" v-if="educations.length > 0">
-                            <p>{{ education.institution }}</p>
-                            <p>{{ education.period }}</p>
-                            <p>{{ education.degree }}</p>
-                            <p>{{ education.department }}</p>
+                        <div class="experience_table-items" v-for="experience in experiences" :key="experience.id" v-if="experiences.length > 0">
+                            <p>{{ experience.company }}</p>
+                            <p>{{ experience.period }}</p>
+                            <p>{{ experience.position }}</p>
                             <div>
-                                <button class="btn-icon success" @click="editModal(education)">
+                                <button class="btn-icon success" @click="editModal(experience)">
                                     <i class="fas fa-pencil-alt"></i>
                                 </button>
-                                <button class="btn-icon danger" @click="deleteEducation(education.id)">
+                                <button class="btn-icon danger" @click="deleteExperience(experience.id)">
                                     <i class="far fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -165,26 +164,23 @@
                     </div>
 
                 </div>
-                <!-------------- EDUCATION MODAL --------------->
+                <!-------------- EXPERIENCE MODAL --------------->
                 <div class="modal main__modal " :class="{ show: showModal }">
                     <div class="modal__content">
                         <span class="modal__close btn__close--modal" @click="closeModal()">×</span>
-                        <h3 class="modal__title" v-show="editMode == false">Add Education</h3>
-                        <h3 class="modal__title" v-show="editMode == true">Update Education</h3>
+                        <h3 class="modal__title" v-show="editMode == false">Add Experience</h3>
+                        <h3 class="modal__title" v-show="editMode == true">Update Experience</h3>
                         <hr class="modal_line"><br>
-                        <form @submit.prevent="editMode ?  updateEducation() : createEducation()">
+                        <form @submit.prevent="editMode ?  updateExperience() : createExperience()">
                             <div>
-                                <p>Institution</p>
-                                <input type="text" class="input" v-model="form.institution" />
+                                <p>Company</p>
+                                <input type="text" class="input" v-model="form.company" />
 
                                 <p>Period</p>
                                 <input type="text" class="input" v-model="form.period" />
 
-                                <p>Degree</p>
-                                <input type="text" class="input" v-model="form.degree" />
-
-                                <p>Department</p>
-                                <input type="text" class="input" v-model="form.department" />
+                                <p>Position</p>
+                                <input type="text" class="input" v-model="form.position" />
 
                             </div>
                             <br><hr class="modal_line">

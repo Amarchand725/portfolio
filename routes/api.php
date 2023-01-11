@@ -5,6 +5,8 @@ use App\Http\Controllers\API\AboutController;
 use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\SkillController;
 use App\Http\Controllers\API\EducationController;
+use App\Http\Controllers\API\ExperienceController;
+use App\Http\Controllers\API\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,4 +54,19 @@ Route::controller(EducationController::class)->group(function(){
     Route::post('admin/education/create', 'create');
     Route::post('admin/education/update/{id}', 'update');
     Route::get('admin/education/destroy/{id}', 'destroy');
+});
+
+Route::controller(ExperienceController::class)->group(function(){
+    Route::get('admin/experiences', 'index');
+    Route::post('admin/experience/create', 'create');
+    Route::post('admin/experience/update/{id}', 'update');
+    Route::get('admin/experience/destroy/{id}', 'destroy');
+});
+
+Route::controller(ProjectController::class)->group(function(){
+    Route::get('admin/projects', 'index');
+    Route::post('admin/project/create', 'create');
+    Route::post('admin/project/edit/{id}', 'edit');
+    Route::post('admin/project/update/{id}', 'update');
+    Route::get('admin/project/destroy/{id}', 'destroy');
 });
