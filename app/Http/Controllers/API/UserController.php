@@ -3,31 +3,35 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
-use App\Models\Testimonial;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Auth;
 
-class TestimonialController extends Controller
+class UserController extends Controller
 {
     public function index()
     {
-        $testimonials = Testimonial::orderBy('id', 'desc')->get();
+        $users = User::orderBy('id', 'desc')->get();
         return response()->json([
-            'testimonials' => $testimonials
+            'users' => $users
         ], 200);
     }
 
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required|min:2|max:50',
+            'email' => 'required'
         ]);
 
-        $testimonial = new Testimonial();
-        $testimonial->name = $request->name;
-        $testimonial->function = $request->function;
-        $testimonial->testimony = $request->testimony;
-        $testimonial->rating = $request->rating;
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->type = $request->type;
+        $user->bio = $request->bio;
+        $user->password = Hash::make($request->password);
 
         if($request->photo){
             $strpos = strpos($request->photo, ';');
@@ -36,66 +40,67 @@ class TestimonialController extends Controller
             $photo = time().".".$ex;
             $img = Image::make($request->photo)->resize(700, 500);
             $upload_path = public_path()."/img/upload/";
-            $image = $upload_path.$testimonial->photo;
+            $image = $upload_path.$user->photo;
             $img->save($upload_path.$photo);
             if(file_exists($image)){
                 @unlink($image);
             }
         }else{
-            $photo = $testimonial->photo;
+            $photo = 'avatar.png';
         }
-        $testimonial->photo = $photo;
-        $testimonial->save();
-    }
-
-    public function edit($id)
-    {
-        $testimonial = Testimonial::find($id);
-        return response()->json([
-            'testimonial' => $testimonial
-        ], 200);
+        $user->photo = $photo;
+        $user->save();
     }
 
     public function update(Request $request, $id)
     {
-        $testimonial = Testimonial::find($id);
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required|min:2|max:50',
+            'email' => 'required'
         ]);
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->type = $request->type;
+        $user->bio = $request->bio;
 
-        $testimonial->name = $request->name;
-        $testimonial->function = $request->function;
-        $testimonial->testimony = $request->testimony;
-        $testimonial->rating = $request->rating;
+        if(!empty($request->password)){
+            $user->password = Hash::make($request->password);
+        }
 
-        if($testimonial->photo != $request->photo){
+        if($user->photo != $request->photo){
             $strpos = strpos($request->photo, ';');
             $sub = substr($request->photo, 0, $strpos);
             $ex = explode('/', $sub)[1];
             $photo = time().".".$ex;
             $img = Image::make($request->photo)->resize(700, 500);
             $upload_path = public_path()."/img/upload/";
-            $image = $upload_path.$testimonial->photo;
+            $image = $upload_path.$user->photo;
             $img->save($upload_path.$photo);
             if(file_exists($image)){
                 @unlink($image);
             }
         }else{
-            $photo = $testimonial->photo;
+            $photo = 'avatar.png';
         }
+        $user->photo = $photo;
+        $user->save();
 
-        $testimonial->photo = $photo;
-        $testimonial->save();
     }
 
     public function destroy($id)
     {
-        $testimonial = Testimonial::findOrFail($id);
+        $user = User::findOrFail($id);
         $image_path = public_path()."/img/upload/";
-        $image = $image_path.$testimonial->photo;
+        $image = $image_path.$user->photo;
         if(file_exists($image)){
             @unlink($image);
         }
-        $testimonial->delete();
+        $user->delete();
+    }
+
+    public function profile()
+    {
+        return Auth::user();
     }
 }

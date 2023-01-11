@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Testimonial>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Message>
  */
-class TestimonialFactory extends Factory
+class MessageFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,10 +18,10 @@ class TestimonialFactory extends Factory
     {
         return [
             'name' => 'Jay Smith',
-            'function' => 'Customer',
-            'testimony' => 'I get a good impression....',
-            'rating' => '4',
-            'photo' => 'avatar.png',
+            'email' => 'customer@mail.com',
+            'subject' => 'Subject of message',
+            'description' => 'Description of message',
+            'status' => '0'
         ];
     }
 }

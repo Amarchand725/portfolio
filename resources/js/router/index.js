@@ -11,6 +11,11 @@ import adminProjectIndex from '../components/admin/projects/index.vue'
 import adminProjectNew from '../components/admin/projects/create.vue'
 import adminProjectEdit from '../components/admin/projects/edit.vue'
 import adminTestimonialIndex from '../components/admin/testimonials/index.vue'
+import adminTestimonialNew from '../components/admin/testimonials/create.vue'
+import adminTestimonialEdit from '../components/admin/testimonials/edit.vue'
+import adminMessageIndex from '../components/admin/messages/index.vue'
+import adminUserIndex from '../components/admin/users/index.vue'
+import adminUserProfile from '../components/admin/users/profile.vue'
 //pages
 import homePageIndex from '../components/pages/home/index.vue'
 import Login from '../components/auth/login.vue'
@@ -96,6 +101,47 @@ const routes = [
         path:'/admin/testimonials',
         name: 'AdminTestimonial',
         component: adminTestimonialIndex,
+        meta:{
+            requiresAuth: true
+        }
+    },
+    {
+        path:'/admin/testimonial/new',
+        name: 'AdminTestimonialNew',
+        component: adminTestimonialNew,
+        meta:{
+            requiresAuth: true
+        }
+    },
+    {
+        path:'/admin/testimonial/edit/:id',
+        name: 'AdminTestimonialEdit',
+        component: adminTestimonialEdit,
+        meta:{
+            requiresAuth: true
+        },
+        props: true
+    },
+    {
+        path:'/admin/messages',
+        name: 'AdminMessage',
+        component: adminMessageIndex,
+        meta:{
+            requiresAuth: true
+        }
+    },
+    {
+        path:'/admin/users',
+        name: 'AdminUser',
+        component: adminUserIndex,
+        meta:{
+            requiresAuth: true
+        }
+    },
+    {
+        path:'/admin/user/profile',
+        name: 'AdminUserProfile',
+        component: adminUserProfile,
         meta:{
             requiresAuth: true
         }

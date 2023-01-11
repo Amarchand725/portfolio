@@ -54,7 +54,7 @@
         .then(() => {
             getServices()
             closeModal()
-            toaster.fir({
+            toast.fire({
                 icon: 'success',
                 title: 'Service update successfully.'
             })

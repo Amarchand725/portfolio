@@ -13,6 +13,10 @@
         localStorage.removeItem('token')
         router.push('/')
     }
+
+    const myProfile = () => {
+        router.push('/admin/user/profile')
+    }
 </script>
 
 <template>
@@ -56,7 +60,7 @@
             </span>
             <ul class="header_profile-name--nav--list">
                 <li class="header_profile-name--nav--item">
-                    <a class="header_profile-name--nav--link" href="#">
+                    <a class="header_profile-name--nav--link" @click="myProfile()">
                         Profile
                     </a>
                 </li>

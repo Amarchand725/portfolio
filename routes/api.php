@@ -8,6 +8,8 @@ use App\Http\Controllers\API\EducationController;
 use App\Http\Controllers\API\ExperienceController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\TestimonialController;
+use App\Http\Controllers\API\MessageController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -73,9 +75,23 @@ Route::controller(ProjectController::class)->group(function(){
 });
 
 Route::controller(TestimonialController::class)->group(function(){
-    Route::get('admin/testimonails', 'index');
-    Route::post('admin/testimonail/create', 'create');
-    Route::get('admin/testimonail/edit/{id}', 'edit');
-    Route::post('admin/testimonail/update/{id}', 'update');
-    Route::get('admin/testimonail/destroy/{id}', 'destroy');
+    Route::get('admin/testimonials', 'index');
+    Route::post('admin/testimonial/create', 'create');
+    Route::get('admin/testimonial/edit/{id}', 'edit');
+    Route::post('admin/testimonial/update/{id}', 'update');
+    Route::get('admin/testimonial/destroy/{id}', 'destroy');
+});
+
+Route::controller(MessageController::class)->group(function(){
+    Route::get('admin/messages', 'index');
+    Route::post('admin/message/status/{id}', 'changeStatus');
+    Route::get('admin/message/destroy/{id}', 'destroy');
+});
+
+Route::controller(UserController::class)->group(function(){
+    Route::get('admin/users', 'index');
+    Route::post('admin/user/create', 'create');
+    Route::post('admin/user/update/{id}', 'update');
+    Route::get('admin/user/destroy/{id}', 'destroy');
+    Route::get('admin/user/profile', 'profile');
 });

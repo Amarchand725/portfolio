@@ -1,38 +1,32 @@
 <script setup>
     import Base from '../layouts/base.vue'
     import { onMounted, ref } from 'vue'
-    import { useRouter } from 'vue-router'
 
-    const router = useRouter()
-
-    let testimonials =ref([])
-
-    const showModal = ref(false)
-    const hideModal = ref(true)
-    const editMode = ref(false)
+    let messages =ref([])
 
     onMounted(async() => {
-        getTestimonials()
+        getMessages()
     })
 
-    const getTestimonials = async () => {
-        let  response = await axios.get('/api/admin/testimonials')
-        testimonials.value = response.data.testimonials
+    const getMessages = async () => {
+        let  response = await axios.get('/api/admin/messages')
+        messages.value = response.data.messages
     }
 
-    const ourImage = (img) => {
-        return '/img/upload/'+img
+    const updateStatus = (id, status) => {
+        const formData = new FormData()
+        formData.append('status', status)
+        axios.post('/api/admin/message/status/'+id, formData)
+        .then(response => {
+            toast.fire({
+                type:'success',
+                title:'Status changed successfully.',
+            })
+            getMessages()
+        })
     }
 
-    const newTestimonial = () => {
-        router.push('/admin/testimonial/new')
-    }
-
-    const onEdit = (id) => {
-        router.push('/admin/testimonial/edit/'+id)
-    }
-
-    const deleteTestimonial = (id) => {
+    const deleteMessage = (id) => {
         Swal.fire({
             title: 'Are you sure?',
             text: "You can't back",
@@ -45,14 +39,14 @@
         })
         .then((result) => {
             if(result.value){
-                axios.get('/api/admin/testimonial/destroy/'+id)
+                axios.get('/api/admin/message/destroy/'+id)
                 .then(() => {
                     Swal.fire(
                         'Delete',
-                        'Testimonial delete successfully',
+                        'Message delete successfully',
                         'success',
                     )
-                    getTestimonials()
+                    getMessages()
                 })
             }
         })
@@ -66,17 +60,15 @@
         <!-- End Side Nav -->
         <!-- Main Content -->
         <div class="main__content">
-             <!--==================== TESTIMONIALS ====================-->
-            <section class="testimonials section" id="testimonials">
-                <div class="testimonials_container">
+            <!--==================== MESSAGES ====================-->
+            <section class="messages section" id="messages">
+                <div class="messages_container">
                     <div class="titlebar">
                         <div class="titlebar_item">
-                            <h1>Testimonials </h1>
+                            <h1>Messages </h1>
                         </div>
                         <div class="titlebar_item">
-                            <div class="btn btn__open--modal" @click="newTestimonial()">
-                                New Testimonial
-                            </div>
+
                         </div>
                     </div>
 
@@ -105,36 +97,39 @@
                             </div>
                             <div class="relative">
                                 <i class="table_search-input--icon fas fa-search "></i>
-                                <input class="table_search--input" type="text" placeholder="Search Testimonial">
+                                <input class="table_search--input" type="text" placeholder="Search Message">
                             </div>
                         </div>
 
-                        <div class="testimonial_table-heading">
-                            <p>Photo</p>
-                            <p>name</p>
-                            <p>Function</p>
-                            <p>Testimony</p>
-                            <p>Rating</p>
+                        <div class="message_table-heading">
+                            <p>Name</p>
+                            <p>Email</p>
+                            <p>Subject</p>
+                            <p>Description</p>
+                            <p>Status</p>
                             <p>Actions</p>
                         </div>
                         <!-- item 1 -->
-                        <div class="testimonial_table-items" v-for="testimonial in testimonials" :key="testimonial.id" v-if="testimonials.length > 0">
+                        <div class="message_table-items" v-for="message in messages" :key="message.id" v-if="messages.length > 0">
+                            <p>{{ message.name }}</p>
+                            <p>{{ message.email }}</p>
+                            <p>{{ message.subject }}</p>
+                            <p>{{ message.description }}</p>
                             <p>
-                                <img :src="ourImage(testimonial.photo)" class="testimonial_img-list">
+                                <span class="badge_read" @click="updateStatus(message.id, 0)" v-if="message.status == 1">
+                                    Read
+                                </span>
+                                <span class="badge_unread" @click="updateStatus(message.id, 1)" v-else>
+                                    Unread
+                                </span>
                             </p>
-                            <p>{{ testimonial.name }}</p>
-                            <p>{{ testimonial.function }}</p>
-                            <p>{{ testimonial.testimony }}</p>
-                            <p>{{ testimonial.rating }}</p>
                             <div>
-                                <button class="btn-icon success" @click="onEdit(testimonial.id)">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </button>
-                                <button class="btn-icon danger" @click="deleteTestimonial(testimonial.id)">
+                                <button class="btn-icon danger" @click="deleteMessage(message.id)">
                                     <i class="far fa-trash-alt"></i>
                                 </button>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>
