@@ -29,7 +29,7 @@
     }
 
     const onEdit = (id) => {
-        router.push('/admin/projects/edit/' + id)
+        router.push('/admin/projects/edit/'+id)
     }
 </script>
 <template>

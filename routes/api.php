@@ -66,7 +66,7 @@ Route::controller(ExperienceController::class)->group(function(){
 Route::controller(ProjectController::class)->group(function(){
     Route::get('admin/projects', 'index');
     Route::post('admin/project/create', 'create');
-    Route::post('admin/project/edit/{id}', 'edit');
+    Route::get('admin/project/edit/{id}', 'edit');
     Route::post('admin/project/update/{id}', 'update');
     Route::get('admin/project/destroy/{id}', 'destroy');
 });
