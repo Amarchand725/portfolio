@@ -5,15 +5,15 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
-use App\Models\Project;
+use App\Models\Testimonial;
 
-class ProjectController extends Controller
+class TestimonialController extends Controller
 {
     public function index()
     {
-        $projects = Project::orderBy('id', 'desc')->get();
+        $testimonials = Testimonial::orderBy('id', 'desc')->get();
         return response()->json([
-            'projects' => $projects
+            'testimonials' => $testimonials
         ], 200);
     }
 
@@ -23,33 +23,33 @@ class ProjectController extends Controller
             'title' => 'required'
         ]);
 
-        $project = new Project();
-        $project->title = $request->title;
-        $project->description = $request->description;
-        $project->link = $request->link;
+        $testimonial = new Testimonial();
+        $testimonial->title = $request->title;
+        $testimonial->description = $request->description;
+        $testimonial->link = $request->link;
 
-        if($request->photo){
-            $strpos = strpos($request->photo, ';');
-            $sub = substr($request->photo, 0, $strpos);
-            $ex = explode('/', $sub)[1];
-            $photo = time().".".$ex;
-            $img = Image::make($request->photo)->resize(700, 500);
-            $upload_path = public_path()."/img/upload/";
-            $image = $upload_path.$project->photo;
-            $img->save($upload_path.$photo);
-            if(file_exists($image)){
-                @unlink($image);
-            }
-        }else{
-            $photo = $project->photo;
-        }
-        $project->photo = $photo;
-        $project->save();
+        // if($request->photo){
+        //     $strpos = strpos($request->photo, ';');
+        //     $sub = substr($request->photo, 0, $strpos);
+        //     $ex = explode('/', $sub)[1];
+        //     $photo = time().".".$ex;
+        //     $img = Image::make($request->photo)->resize(700, 500);
+        //     $upload_path = public_path()."/img/upload/";
+        //     $image = $upload_path.$project->photo;
+        //     $img->save($upload_path.$photo);
+        //     if(file_exists($image)){
+        //         @unlink($image);
+        //     }
+        // }else{
+        //     $photo = $project->photo;
+        // }
+        // $project->photo = $photo;
+        // $project->save();
     }
 
     public function edit($id)
     {
-        $project = Project::find($id);
+        $project = Testimonial::find($id);
         return response()->json([
             'project' => $project
         ], 200);
@@ -57,7 +57,7 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id)
     {
-        $project = Project::find($id);
+        $project = Testimonial::find($id);
         $this->validate($request, [
             'title' => 'required'
         ]);
@@ -88,7 +88,7 @@ class ProjectController extends Controller
 
     public function destroy($id)
     {
-        $project = Project::findOrFail($id);
+        $project = Testimonial::findOrFail($id);
         $image_path = public_path()."/img/upload/";
         $image = $image_path.$project->photo;
         if(file_exists($image)){

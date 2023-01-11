@@ -7,6 +7,7 @@ use App\Http\Controllers\API\SkillController;
 use App\Http\Controllers\API\EducationController;
 use App\Http\Controllers\API\ExperienceController;
 use App\Http\Controllers\API\ProjectController;
+use App\Http\Controllers\API\TestimonialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -69,4 +70,12 @@ Route::controller(ProjectController::class)->group(function(){
     Route::get('admin/project/edit/{id}', 'edit');
     Route::post('admin/project/update/{id}', 'update');
     Route::get('admin/project/destroy/{id}', 'destroy');
+});
+
+Route::controller(TestimonialController::class)->group(function(){
+    Route::get('admin/testimonails', 'index');
+    Route::post('admin/testimonail/create', 'create');
+    Route::get('admin/testimonail/edit/{id}', 'edit');
+    Route::post('admin/testimonail/update/{id}', 'update');
+    Route::get('admin/testimonail/destroy/{id}', 'destroy');
 });

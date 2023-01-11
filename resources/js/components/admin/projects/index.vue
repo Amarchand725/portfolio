@@ -31,6 +31,32 @@
     const onEdit = (id) => {
         router.push('/admin/projects/edit/'+id)
     }
+
+    const deleteProject = (id) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You can't back",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Yes, Delete it',
+        })
+        .then((result) => {
+            if(result.value){
+                axios.get('/api/admin/project/destroy/'+id)
+                .then(() => {
+                    Swal.fire(
+                        'Delete',
+                        'Project delete successfully',
+                        'success',
+                    )
+                    getProjects()
+                })
+            }
+        })
+    }
 </script>
 <template>
     <Base />
@@ -102,7 +128,7 @@
                                 <button class="btn-icon success" @click="onEdit(project.id)">
                                     <i class="fas fa-pencil-alt"></i>
                                 </button>
-                                <button class="btn-icon danger" >
+                                <button class="btn-icon danger" @click="deleteProject(project.id)">
                                     <i class="far fa-trash-alt"></i>
                                 </button>
                             </div>

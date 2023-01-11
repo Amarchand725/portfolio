@@ -10,6 +10,7 @@ import adminExperienceIndex from '../components/admin/experience/index.vue'
 import adminProjectIndex from '../components/admin/projects/index.vue'
 import adminProjectNew from '../components/admin/projects/create.vue'
 import adminProjectEdit from '../components/admin/projects/edit.vue'
+import adminTestimonialIndex from '../components/admin/testimonials/index.vue'
 //pages
 import homePageIndex from '../components/pages/home/index.vue'
 import Login from '../components/auth/login.vue'
@@ -86,6 +87,15 @@ const routes = [
         path:'/admin/projects/edit/:id',
         name: 'AdminProjectEdit',
         component: adminProjectEdit,
+        meta:{
+            requiresAuth: true
+        },
+        props: true
+    },
+    {
+        path:'/admin/testimonials',
+        name: 'AdminTestimonial',
+        component: adminTestimonialIndex,
         meta:{
             requiresAuth: true
         }

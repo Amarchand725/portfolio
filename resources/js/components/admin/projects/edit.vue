@@ -1,6 +1,9 @@
 <script setup>
     import Base from '../layouts/base.vue'
     import { onMounted, ref } from 'vue'
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter()
 
     const form = ref({
         id:'',
@@ -23,11 +26,10 @@
 
     const getSingleProject = async() =>{
         let response = await axios.get(`/api/admin/project/edit/${props.id}`)
-        // form.value = response.data.project
-        console.log('response', response)
+        form.value = response.data.project
     }
 
-      const getPhoto = () => {
+    const getPhoto = () => {
         let photo = '/img/upload/avatar.png'
         if(form.value.photo){
             if(form.value.photo.indexOf('base64') != -1){
@@ -39,6 +41,36 @@
 
         return photo
     }
+
+    const changePhoto = (e) => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        let limit = 1024*1024*2
+        if( file['size'] > limit ){
+            swal({
+                icon:'error',
+                title: 'Oops...',
+                text: 'You are uploading  a large file'
+            })
+            return false
+        }
+        reader.onloadend =(file) => {
+            form.value.photo = reader.result
+        }
+        reader.readAsDataURL(file)
+    }
+
+    const updateProject = async () => {
+        await axios.post(`/api/admin/project/update/${form.value.id}`, form.value)
+        .then(response => {
+            router.push('/admin/projects')
+            toast.fire({
+                icon:'success',
+                title:'Project updated successfully.'
+            })
+        })
+    }
+
 </script>
 <template>
     <Base />
@@ -56,7 +88,7 @@
                             <h1>Edit Project</h1>
                         </div>
                         <div class="titlebar_item">
-                            <div class="btn btn-secondary">
+                            <div class="btn btn-secondary" @click="updateProject()">
                                 Update Project
                             </div>
                         </div>
@@ -66,13 +98,13 @@
                             <div class="card">
 
                                 <p>Title</p>
-                                <input type="text" class="input" v-model="form.title" />
+                                <input type="text" class="input" v-model="form.title"/>
 
                                 <p>Description</p>
-                                <textarea cols="10" rows="5" v-model="form.description" ></textarea>
+                                <textarea cols="10" rows="5" v-model="form.description"></textarea>
 
                                 <p>Link</p>
-                                <input type="text" class="input" v-model="form.link" />
+                                <input type="text" class="input" v-model="form.link"/>
 
                             </div>
                         </div>
@@ -80,10 +112,10 @@
                         <div class="wrapper_right ">
                             <div class="card">
                                 <div class="project_img-container">
-                                 <img :src="getPhoto()" alt="" class="project_img">
+                                 <img :src="getPhoto()" class="project_img">
                                 </div>
                                 <br>
-                                <input type="file" id="fileimg" />
+                                <input type="file" id="fileimg" @change="changePhoto"/>
                                 <br><br><br>
                             </div>
                         </div>
@@ -94,7 +126,7 @@
 
                         </div>
                         <div class="titlebar_item">
-                            <div class="btn btn-secondary">
+                            <div class="btn btn-secondary" @click="updateProject()">
                                 Update Project
                             </div>
                         </div>
