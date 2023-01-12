@@ -25,8 +25,6 @@
 
     const getData = async () => {
         let  response = await axios.get('/api/admin/user_data')
-        // projects.value = response.data.projects
-        console.log('response', response)
         user_data.value = response.data.user_data
     }
 
@@ -57,14 +55,14 @@
                         <div class="titlebar_item"></div>
                     </div>
 
-                    <div class="overview_skills">
-                        <div class="overview_skills-title" v-for="service in user_data.services" :key="service.id" v-if="user_data.services.length > 0">
+                    <div class="overview_skills" v-for="service in user_data.services" :key="service.id" v-if="user_data.services.length > 0">
+                        <div class="overview_skills-title">
                             <h3>{{ service.name }}</h3>
                         </div>
-                        <div class="skills_data">
+                        <div class="skills_data" v-for="item in service.have_skills" :key="item.id" v-if="service.have_skills.length > 0">
                             <div class="skills_titles">
-                                <h3 class="skills_name">HTML</h3>
-                                <span class="skills_number">90%</span>
+                                <h3 class="skills_name">{{ item.name }}</h3>
+                                <span class="skills_number">{{ item.proficiency }}%</span>
                             </div>
                             <div class="skills_bar">
                                 <span class="skills_percentage skills_html"></span>
@@ -72,89 +70,6 @@
                         </div>
                     </div>
                     <br>
-                    <!-- <div class="overview_skills">
-                        <div class="overview_skills-title">
-                            <h3>Backend developer</h3>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">PHP</h3>
-                                <span class="skills_number">90%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_html"></span>
-                            </div>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">Node Js</h3>
-                                <span class="skills_number">80%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_css"></span>
-                            </div>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">Python</h3>
-                                <span class="skills_number">75%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_js"></span>
-                            </div>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">Ruby</h3>
-                                <span class="skills_number">75%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_js"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="overview_skills">
-                        <div class="overview_skills-title">
-                            <h3>Designer</h3>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">Figma</h3>
-                                <span class="skills_number">90%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_html"></span>
-                            </div>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">Sketch</h3>
-                                <span class="skills_number">80%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_css"></span>
-                            </div>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">Adobe XD</h3>
-                                <span class="skills_number">75%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_js"></span>
-                            </div>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">Photoshop</h3>
-                                <span class="skills_number">75%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_js"></span>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
                 <div class="overview_right">
                     <div class="titlebar">

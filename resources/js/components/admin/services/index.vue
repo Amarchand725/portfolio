@@ -10,7 +10,7 @@
     })
     const showModal = ref(false)
     const hideModal = ref(true)
-    const editMode = ref(true)
+    const editMode = ref(false)
 
     onMounted(async () => {
         getServices()
@@ -22,6 +22,7 @@
     }
 
     const openModal = () => {
+        editMode.value = false
         showModal.value = !showModal.value
     }
 
@@ -169,7 +170,7 @@
                         <h3 class="modal__title" v-show="editMode == false">Add Service</h3>
                         <h3 class="modal__title" v-show="editMode == true">Update Service</h3>
                         <hr class="modal_line"><br>
-                        <form @submit.prevent="editMode.value ? createService() : updateService()">
+                        <form @submit.prevent="editMode ? updateService() : createService()">
                             <div>
                                 <p>Service Name</p>
                                 <input type="text" class="input" v-model="form.name" />

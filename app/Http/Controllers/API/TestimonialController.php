@@ -26,7 +26,7 @@ class TestimonialController extends Controller
         $testimonial = new Testimonial();
         $testimonial->name = $request->name;
         $testimonial->function = $request->function;
-        $testimonial->testimony = $request->testimony;
+        $testimonial->testinomy = $request->testinomy;
         $testimonial->rating = $request->rating;
 
         if($request->photo){
@@ -65,7 +65,7 @@ class TestimonialController extends Controller
 
         $testimonial->name = $request->name;
         $testimonial->function = $request->function;
-        $testimonial->testimony = $request->testimony;
+        $testimonial->testinomy = $request->testinomy;
         $testimonial->rating = $request->rating;
 
         if($testimonial->photo != $request->photo){

@@ -1,9 +1,22 @@
 <script setup>
-    import { ref } from 'vue'
+    import { onMounted,ref } from 'vue'
     import { useRouter } from 'vue-router'
 
     const router = useRouter()
+    const user = ref({
+        name:'',
+        photo:'',
+    })
     const showNavHeader = ref(false)
+
+    onMounted(async() => {
+        getUser()
+    })
+
+    const getUser = async() =>{
+        let response = await axios.get('/api/admin/user/profile')
+        user.value = response.data
+    }
 
     const openNavHeader = () => {
         showNavHeader.value = !showNavHeader.value
@@ -16,6 +29,18 @@
 
     const myProfile = () => {
         router.push('/admin/user/profile')
+    }
+    const getPhoto = () => {
+        let photo = '/img/upload/avatar.png'
+        if(user.value.photo){
+            if(user.value.photo.indexOf('base64') != -1){
+                photo = user.value.photo
+            }else{
+                photo = '/img/upload/' + user.value.photo
+            }
+        }
+
+        return photo
     }
 </script>
 
@@ -34,10 +59,10 @@
         </div>
         <div class="header_profile" @click="openNavHeader">
             <div class="header_profile-imgWrapper ">
-                <img class="header_profile-img" src="assets/img/avatar.jpg" alt=""/>
+                <img class="header_profile-img" :src="getPhoto()"/>
             </div>
             <p class="header_profile-name">
-                Zander Ford
+                {{ user.name }}
             </p>
 
         </div>
@@ -60,14 +85,14 @@
             </span>
             <ul class="header_profile-name--nav--list">
                 <li class="header_profile-name--nav--item">
-                    <a class="header_profile-name--nav--link" @click="myProfile()">
+                    <router-link class="header_profile-name--nav--link" to="/admin/user/profile">
                         Profile
-                    </a>
+                    </router-link>
                 </li>
                 <li class="header_profile-name--nav--item">
-                    <a class="header_profile-name--nav--link" href="#">
+                    <router-link class="header_profile-name--nav--link" to="/admin/messages">
                         Message
-                    </a>
+                    </router-link>
                 </li>
                 <li class="header_profile-name--nav--item">
                     <a class="header_profile-name--nav--link" href="#" @click="logout">

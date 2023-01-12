@@ -13,7 +13,7 @@
 
     const showModal = ref(false)
     const hideModal = ref(true)
-    const editMode = ref(true)
+    const editMode = ref(false)
 
     onMounted(async() => {
         getSkills()
@@ -31,6 +31,7 @@
     }
 
     const openModal = () => {
+        editMode.value = false
         showModal.value = !showModal.value
     }
 
@@ -177,10 +178,10 @@
                 <div class="modal main__modal " :class="{ show: showModal }">
                     <div class="modal__content">
                         <span class="modal__close btn__close--modal" @click="closeModal()">×</span>
-                        <h3 class="modal__title" v-show="editMode == false">Add Service</h3>
-                        <h3 class="modal__title" v-show="editMode == true">Update Service</h3>
+                        <h3 class="modal__title" v-show="editMode == false">Add Skill</h3>
+                        <h3 class="modal__title" v-show="editMode == true">Update Skill</h3>
                         <hr class="modal_line"><br>
-                        <form @submit.prevent="editMode.value ? createSkill() : updateSkill()">
+                        <form @submit.prevent="editMode ? updateSkill() : createSkill()">
                             <div>
                                 <p>Name</p>
                                 <input type="text" class="input" v-model="form.name" />
@@ -200,7 +201,7 @@
                                     Cancel
                                 </button>
                                 <button type="submit" class="btn btn-secondary " v-show="editMode == false">Save</button>
-                                <button type="submit" class="btn btn-secondary " v-show="editMode == true">Update Service</button>
+                                <button type="submit" class="btn btn-secondary " v-show="editMode == true">Update Skill</button>
                             </div>
                         </form>
                     </div>

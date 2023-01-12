@@ -113,7 +113,7 @@
                             <p>Photo</p>
                             <p>name</p>
                             <p>Function</p>
-                            <p>Testimony</p>
+                            <p>Testinomy</p>
                             <p>Rating</p>
                             <p>Actions</p>
                         </div>
@@ -124,7 +124,7 @@
                             </p>
                             <p>{{ testimonial.name }}</p>
                             <p>{{ testimonial.function }}</p>
-                            <p>{{ testimonial.testimony }}</p>
+                            <p>{{ testimonial.testinomy }}</p>
                             <p>{{ testimonial.rating }}</p>
                             <div>
                                 <button class="btn-icon success" @click="onEdit(testimonial.id)">

@@ -7,9 +7,9 @@
 
     const form = ref({
         id:'',
-        title:'',
-        description:'',
-        link:'',
+        name:'',
+        function:'',
+        testinomy:'',
         photo:'',
     })
 
@@ -102,8 +102,8 @@
                                 <p>Function</p>
                                 <input type="text" class="input" v-model="form.function"/>
 
-                                <p>Testimony</p>
-                                <textarea cols="10" rows="5" v-model="form.testimony" ></textarea>
+                                <p>Testinomy</p>
+                                <textarea cols="10" rows="5" v-model="form.testinomy" ></textarea>
 
                             </div>
                         </div>
