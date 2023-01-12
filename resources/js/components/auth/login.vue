@@ -16,6 +16,7 @@
         .then(response =>{
             if(response.data.success){
                 localStorage.setItem('token', response.data.data.token)
+                console.log(response)
                 router.push('/admin/home');
             }else{
                 error.value = response.data.message;
@@ -26,15 +27,6 @@
 
 <template>
     <div>
-        <!-- <form @submit.prevent="login">
-            <span style="color:red" v-if="error">{{ error }}</span><br /><br />
-            <input type="email" v-model="form.email"><br /><br />
-            <input type="password" v-model="form.password"><br /><br />
-            <button type="submit">Login</button>
-        </form> -->
-
-        <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'> -->
-
         <form @submit.prevent="login">
             <div class="box">
                 <h1>ADMIN LOGIN</h1>
@@ -42,17 +34,12 @@
                 <input type="email" name="email" v-model="form.email" class="email" />
                 <input type="password" name="email" v-model="form.password" class="email" />
                 <button class="btn" type="submit">Sing In</button>
-                <!-- End Btn -->
                 <a href="#">
                     <div id="btn2">Sign Up</div>
                 </a>
-                <!-- End Btn2 -->
                 <p>Forgot your password? <u style="color:#f1c40f;">Click Here!</u></p>
             </div>
-            <!-- End Box -->
         </form>
-
-
     </div>
 </template>
 <style>

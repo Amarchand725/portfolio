@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(AuthController::class)->group(function(){
     Route::post('login', 'login');
     Route::post('register', 'register');
+    Route::get('/admin/user_data', 'getData');
 });
 
 Route::controller(AboutController::class)->group(function(){
@@ -94,4 +95,5 @@ Route::controller(UserController::class)->group(function(){
     Route::post('admin/user/update/{id}', 'update');
     Route::get('admin/user/destroy/{id}', 'destroy');
     Route::get('admin/user/profile', 'profile');
+    Route::post('admin/user/update_profile/{id}', 'updateProfile');
 });

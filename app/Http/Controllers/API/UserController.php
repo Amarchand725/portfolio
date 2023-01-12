@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Auth;
 
 class UserController extends Controller
 {
@@ -81,7 +81,7 @@ class UserController extends Controller
                 @unlink($image);
             }
         }else{
-            $photo = 'avatar.png';
+            $photo = $user->photo;
         }
         $user->photo = $photo;
         $user->save();
@@ -101,6 +101,39 @@ class UserController extends Controller
 
     public function profile()
     {
-        return Auth::user();
+        // return Auth::user();
+        return User::find(1);
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->bio = $request->bio;
+
+        if($request->password == 'undefined'){
+            $user->password = $user->password;
+        }else{
+            $user->password = Hash::make($request->password);
+        }
+
+        if($user->photo != $request->photo){
+            $strpos = strpos($request->photo, ';');
+            $sub = substr($request->photo, 0, $strpos);
+            $ex = explode('/', $sub)[1];
+            $photo = time().".".$ex;
+            $img = Image::make($request->photo)->resize(700, 500);
+            $upload_path = public_path()."/img/upload/";
+            $image = $upload_path.$user->photo;
+            $img->save($upload_path.$photo);
+            if(file_exists($image)){
+                @unlink($image);
+            }
+        }else{
+            $photo = $user->photo;
+        }
+        $user->photo = $photo;
+        $user->save();
     }
 }

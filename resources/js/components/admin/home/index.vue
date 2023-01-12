@@ -1,26 +1,50 @@
 <script setup>
-    import { useRouter } from 'vue-router';
     import Base from '../layouts/base.vue';
+    import { useRouter } from 'vue-router';
+    import { onMounted, ref } from 'vue'
 
     const router = useRouter()
+
+    const user_data = ref({
+        projects:'',
+        testimonials:'',
+        services:'',
+        skills_count:'',
+        educations_count:'',
+        experiences_count:'',
+        services_count:'',
+        projects_count:'',
+        testimonials_count:'',
+        messages_count:'',
+        users_count:'',
+    })
+
+    onMounted(async() => {
+        getData()
+    })
+
+    const getData = async () => {
+        let  response = await axios.get('/api/admin/user_data')
+        // projects.value = response.data.projects
+        console.log('response', response)
+        user_data.value = response.data.user_data
+    }
 
     const logout = () => {
         localStorage.removeItem('token')
         router.push('/')
     }
+
+    const getPhoto = (img) => {
+        return '/img/upload/'+img
+    }
 </script>
 <template>
     <Base />
-
     <!--==================== MAIN ====================-->
     <main class="main">
-        <!-- Side Nav Dummy-->
         <div class="main__sideNav"></div>
-        <!-- End Side Nav -->
-        <!-- Main Content -->
         <div class="main__content">
-            <!-- ==================-->
-            <!-- Overview Page -->
             <section class="overview" id="overview">
                 <div class="overview_left">
                     <div class="overview_analyse">
@@ -30,13 +54,12 @@
                         <div class="titlebar_item">
                             <h1>Skills</h1>
                         </div>
-                        <div class="titlebar_item">
-
-                        </div>
+                        <div class="titlebar_item"></div>
                     </div>
+
                     <div class="overview_skills">
-                        <div class="overview_skills-title">
-                            <h3>Frontend developer</h3>
+                        <div class="overview_skills-title" v-for="service in user_data.services" :key="service.id" v-if="user_data.services.length > 0">
+                            <h3>{{ service.name }}</h3>
                         </div>
                         <div class="skills_data">
                             <div class="skills_titles">
@@ -47,27 +70,9 @@
                                 <span class="skills_percentage skills_html"></span>
                             </div>
                         </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">CSS</h3>
-                                <span class="skills_number">80%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_css"></span>
-                            </div>
-                        </div>
-                        <div class="skills_data">
-                            <div class="skills_titles">
-                                <h3 class="skills_name">JavaScript</h3>
-                                <span class="skills_number">75%</span>
-                            </div>
-                            <div class="skills_bar">
-                                <span class="skills_percentage skills_js"></span>
-                            </div>
-                        </div>
                     </div>
                     <br>
-                    <div class="overview_skills">
+                    <!-- <div class="overview_skills">
                         <div class="overview_skills-title">
                             <h3>Backend developer</h3>
                         </div>
@@ -149,16 +154,14 @@
                                 <span class="skills_percentage skills_js"></span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="overview_right">
                     <div class="titlebar">
                         <div class="titlebar_item">
                             <h1>Overview Dashboard</h1>
                         </div>
-                        <div class="titlebar_item">
-
-                        </div>
+                        <div class="titlebar_item"></div>
                     </div>
 
                     <!-- TOP CARDS -->
@@ -166,7 +169,7 @@
                         <div class="overview_cards-item">
                             <div class="overview_data">
                                 <p>Skills</p>
-                                <span>16</span>
+                                <span>{{ user_data.skills_count }}</span>
                             </div>
                             <div class="overview_link">
                                 <span></span>
@@ -176,7 +179,7 @@
                         <div class="overview_cards-item">
                             <div class="overview_data">
                                 <p>Educations</p>
-                                <span>16</span>
+                                <span>{{ user_data.educations_count }}</span>
                             </div>
                             <div class="overview_link">
                                 <span></span>
@@ -186,7 +189,7 @@
                         <div class="overview_cards-item">
                             <div class="overview_data">
                                 <p>Experience</p>
-                                <span>16</span>
+                                <span>{{ user_data.experiences_count }}</span>
                             </div>
                             <div class="overview_link">
                                 <span></span>
@@ -196,7 +199,7 @@
                         <div class="overview_cards-item">
                             <div class="overview_data">
                                 <p>Services</p>
-                                <span>16</span>
+                                <span>{{ user_data.services_count }}</span>
                             </div>
                             <div class="overview_link">
                                 <span></span>
@@ -206,7 +209,7 @@
                         <div class="overview_cards-item">
                             <div class="overview_data">
                                 <p>Projects</p>
-                                <span>9</span>
+                                <span>{{ user_data.projects_count }}</span>
                             </div>
                             <div class="overview_link">
                                 <span></span>
@@ -216,7 +219,7 @@
                         <div class="overview_cards-item">
                             <div class="overview_data">
                                 <p>Testimonials</p>
-                                <span>9</span>
+                                <span>{{ user_data.testimonials_count }}</span>
                             </div>
                             <div class="overview_link">
                                 <span></span>
@@ -226,7 +229,7 @@
                         <div class="overview_cards-item">
                             <div class="overview_data">
                                 <p>Messages</p>
-                                <span>9</span>
+                                <span>{{ user_data.messages_count }}</span>
                             </div>
                             <div class="overview_link">
                                 <span></span>
@@ -236,15 +239,13 @@
                         <div class="overview_cards-item">
                             <div class="overview_data">
                                 <p>Users</p>
-                                <span>9</span>
+                                <span>{{ user_data.users_count }}</span>
                             </div>
                             <div class="overview_link">
                                 <span></span>
                                 <a href="#">View Reports</a>
                             </div>
                         </div>
-
-
                     </div>
                     <!-- MEDIUM CARDS -->
                     <div class="overview_table">
@@ -253,46 +254,16 @@
                                 <div class="titlebar_item">
                                     <h1>Latest Projects</h1>
                                 </div>
-                                <div class="titlebar_item">
-
-                                </div>
+                                <div class="titlebar_item"></div>
                             </div>
                             <div class="table">
                                 <div class="overview_table-header">
                                     <p>Image</p>
                                     <p>Product</p>
                                 </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio2.jpg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio3.jpg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
+                                <div class="overview_table-items" v-for="project in user_data.projects" :key="project.id" v-if="user_data.projects.length > 0">
+                                    <img :src="getPhoto(project.photo)" style="height:50px;width:50px;" />
+                                    <a>{{ project.title }}</a>
                                 </div>
                             </div>
                         </div>
@@ -310,89 +281,20 @@
                                     <p>Image</p>
                                     <p>Product</p>
                                 </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
-                                </div>
-                                <div class="overview_table-items" >
-                                    <img src="assets/img/portfolio1.jpeg" style="height:50px;width:50px;" />
-                                    <a>Product item.name item.name item.name</a>
+                                <div class="overview_table-items" v-for="testimonial in user_data.testimonials" :key="testimonial.id">
+                                    <img :src="getPhoto(testimonial.photo)" style="height:50px;width:50px;" />
+                                    <a>{{ testimonial.name }}</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
                 </div>
-            </section>
-
-
-            <!--==================== ABOUT ====================-->
-
-
-            <!--==================== SKILLS ====================-->
-            <section class="skills section" id="skills">
-
-            </section>
-
-            <!--==================== QUALIFICATION ====================-->
-            <section class="qualification section">
-
-            </section>
-
-            <!--==================== SERVICES ====================-->
-            <section class="services section" id="services">
-
-            </section>
-
-            <!--==================== PORTFOLIO ====================-->
-            <section class="portfolio section" id="portfolio">
-
-            </section>
-
-            <!--==================== PROJECT IN MIND ====================-->
-            <section class="project section">
-
-            </section>
-
-            <!--==================== TESTIMONIAL ====================-->
-            <section class="testimonial section">
-
-            </section>
-
-            <!--==================== CONTACT ME ====================-->
-            <section class="contact section" id="contact">
-
             </section>
         </div>
     </main>
 
     <!--==================== FOOTER ====================-->
     <footer class="footer">
-
     </footer>
 </template>
